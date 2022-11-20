@@ -1,24 +1,17 @@
-import logging 
-from db_setup import create_app, db
-from service import getUserData, postUserData,  putUser, deleteUser 
-from flask import request 
-
-# logging.basicConfig(filename='record.log', level=logging.DEBUG) 
-
-app = create_app()
-with app.app_context():
-    db.create_all()
-# app.logger.info('DB tables created')
+from app import app 
+from service import getUserData, postUserData,  putUser, deleteUser
+from flask import request
 
 @app.route("/")
 def home():
+    app.logger.info("home page")
     return "Hello, Flask!"
 
 @app.route('/user',methods=['GET'])
 @app.route('/user/<id>',methods=['GET'])
 def read_user(id=None):
+    app.logger.info("user api")
     return getUserData(id)
-
 
 @app.route('/user',methods=['POST'])
 def insert_user():
@@ -30,9 +23,4 @@ def update_user():
 
 @app.route('/user/<id>',methods=['DELETE'])
 def delete_user(id):
-    return deleteUser(id)   
-
-
-if __name__ == '__main__':
-    app.run()
-    # app.logger.info("app started")
+    return deleteUser(id)
