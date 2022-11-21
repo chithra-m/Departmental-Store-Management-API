@@ -1,17 +1,17 @@
 from departmental_store_api import db
 from marshmallow import Schema, fields
 
-class ProductCategory(db.Model):
-    __tablename__ = 'product_category'
+class ProductItem(db.Model):
+    __tablename__ = 'product_item'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable = False, unique = True)
-    description = db.Column(db.String, nullable = False)
+    product_category_id = db.Column(db.Integer, db.ForeignKey("product_category.id"))
+
 
     def __init__(self, name, description):
         self.name = name
         self.description = description
 
-class ProductCategorySchema(Schema):
+class ProductItemSchema(Schema):
     id = fields.Integer()
     name =  fields.String()
-    description = fields.String()
