@@ -1,5 +1,5 @@
-from db_setup import db
-from models import Customer, CustomerSchema
+from departmental_store_api import db
+from departmental_store_api.customer.model import Customer, CustomerSchema
 import json
 
 def get_customer_data(log):
