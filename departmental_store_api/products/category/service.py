@@ -98,7 +98,7 @@ def delete_category_data(category_id):
             
             if exists:
                 logging.error("error occurred in category_service/delete_category_data  -> Table reference error, category_id is {category_id}")
-                return "something went wrong"
+                return "Table reference error"
 
             db.session.delete(ProductCategory.query.get(category_id))
             db.session.commit()

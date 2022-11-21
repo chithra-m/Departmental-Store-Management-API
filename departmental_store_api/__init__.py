@@ -19,10 +19,12 @@ def create_app(config_class=Config):
     from departmental_store_api.customer.route import customer
     from departmental_store_api.products.category.route import category
     from departmental_store_api.products.item.route import item
+    from departmental_store_api.supplier.route import supplier
 
     app.register_blueprint(customer)
     app.register_blueprint(category)
     app.register_blueprint(item)
+    app.register_blueprint(supplier)
     
     return app
 
