@@ -78,13 +78,15 @@ def update_customer_data(update_customer, log):
                 return "Address is required"            
 
             customer_info = Customer.query.get(customer['id'])
-            customer_info.name = customer['name']
-            customer_info.email = customer['email']
-            customer_info.contactno = customer['contactno']
-            customer_info.address = customer['address']
+            
+            if customer_info:
+                customer_info.name = customer['name']
+                customer_info.email = customer['email']
+                customer_info.contactno = customer['contactno']
+                customer_info.address = customer['address']
 
-            db.session.commit()
-            return customer['id']
+                db.session.commit()
+                return customer['id']
             
         return None
 

@@ -61,11 +61,13 @@ def update_category_data(update_category, log):
                 return "Name is required"      
 
             category_info = ProductCategory.query.get(category['id'])
-            category_info.name = category['name']
-            category_info.description = category['description']
+            
+            if category_info:
+                category_info.name = category['name']
+                category_info.description = category['description']
 
-            db.session.commit()
-            return category['id']
+                db.session.commit()
+                return category['id']
             
         return None
 
