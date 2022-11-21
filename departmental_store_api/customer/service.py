@@ -1,8 +1,9 @@
 from departmental_store_api import db
 from departmental_store_api.customer.model import Customer, CustomerSchema
 import json
+import logging
 
-def get_customer_data(log):
+def get_customer_data():
     try:
         temp = Customer.query.all()       
         seralizer = CustomerSchema(many = True)
@@ -10,10 +11,10 @@ def get_customer_data(log):
         return data
 
     except Exception as error:
-        log.error("error occurred in customer_service/get_customer_data" + str(error.__class__))
+        logging.error("error occurred in customer_service/get_customer_data" + str(error.__class__))
         return str(error.__class__)
 
-def get_customer_data_by_id(id, log):
+def get_customer_data_by_id(id):
     try:
         if id:
             temp = Customer.query.filter_by(id = id)        
@@ -24,10 +25,10 @@ def get_customer_data_by_id(id, log):
         return "Id is required"
 
     except Exception as error:
-        log.error("error occurred in customer_service/get_customer_data_by_id" + str(error.__class__))
+        logging.error("error occurred in customer_service/get_customer_data_by_id" + str(error.__class__))
         return str(error.__class__)
 
-def create_customer_data(customer, log):
+def create_customer_data(customer):
     try:
         if customer:
             customer = json.loads(customer)
@@ -54,10 +55,10 @@ def create_customer_data(customer, log):
             
         return None
     except Exception as error:
-        log.error("error occurred in customer_service/create_customer_data" + str(error.__class__))
+        logging.error("error occurred in customer_service/create_customer_data" + str(error.__class__))
         return str(error.__class__)
 
-def update_customer_data(update_customer, log):
+def update_customer_data(update_customer):
     try:
         if update_customer:
             customer = json.loads(update_customer)
@@ -78,7 +79,7 @@ def update_customer_data(update_customer, log):
                 return "Address is required"            
 
             customer_info = Customer.query.get(customer['id'])
-            
+
             if customer_info:
                 customer_info.name = customer['name']
                 customer_info.email = customer['email']
@@ -91,10 +92,10 @@ def update_customer_data(update_customer, log):
         return None
 
     except Exception as error:
-        log.error("error occurred in customer_service/update_customer_data" + str(error.__class__))
+        logging.error("error occurred in customer_service/update_customer_data" + str(error.__class__))
         return str(error.__class__)
 
-def delete_customer_data(customer_id, log):
+def delete_customer_data(customer_id):
     try:
         if not customer_id:
             return "customer_id is required"
@@ -113,5 +114,5 @@ def delete_customer_data(customer_id, log):
         return "Customer data not available"
 
     except Exception as error:
-        log.error("error occurred in customer_service/delete_customer_data" + str(error.__class__))
+        logging.error("error occurred in customer_service/delete_customer_data" + str(error.__class__))
         return str(error.__class__)
