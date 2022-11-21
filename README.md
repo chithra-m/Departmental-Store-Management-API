@@ -1,5 +1,11 @@
 # departmental-store-management-api
 
-set up  :
-1. pip install requirements.txt
-2. RUN flask run.py
+Installation :
+
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+Execution:
+
+RUN "run.py" file

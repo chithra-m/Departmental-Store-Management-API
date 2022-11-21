@@ -1,8 +1,11 @@
 from departmental_store_api import db
 from departmental_store_api.products.category.model import ProductCategory, ProductCategorySchema
 import json
+import logging
+from departmental_store_api.products.item.model import ProductItem
 
-def get_category_data(log):
+
+def get_category_data():
     try:
         temp = ProductCategory.query.all()       
         seralizer = ProductCategorySchema(many = True)
@@ -10,10 +13,11 @@ def get_category_data(log):
         return data
 
     except Exception as error:
-        log.error("error occurred in category_service/get_category_data" + str(error.__class__))
+        logging.error("error occurred in category_service/get_category_data" + str(error.__class__))
         return str(error.__class__)
 
-def get_category_data_by_id(id, log):
+
+def get_category_data_by_id(id):
     try:
         if id:
             temp = ProductCategory.query.filter_by(id = id)        
@@ -24,10 +28,11 @@ def get_category_data_by_id(id, log):
         return "Id is required"
 
     except Exception as error:
-        log.error("error occurred in category_service/get_category_data_by_id" + str(error.__class__))
+        logging.error("error occurred in category_service/get_category_data_by_id" + str(error.__class__))
         return str(error.__class__)
 
-def create_category_data(category, log):
+
+def create_category_data(category):
     try:
         if category:
             category = json.loads(category)
@@ -46,10 +51,11 @@ def create_category_data(category, log):
             
         return None
     except Exception as error:
-        log.error("error occurred in category_service/create_category_data" + str(error.__class__))
+        logging.error("error occurred in category_service/create_category_data" + str(error.__class__))
         return str(error.__class__)
 
-def update_category_data(update_category, log):
+
+def update_category_data(update_category):
     try:
         if update_category:
             category = json.loads(update_category)
@@ -72,10 +78,11 @@ def update_category_data(update_category, log):
         return None
 
     except Exception as error:
-        log.error("error occurred in category_service/update_category_data" + str(error.__class__))
+        logging.error("error occurred in category_service/update_category_data" + str(error.__class__))
         return str(error.__class__)
 
-def delete_category_data(category_id, log):
+
+def delete_category_data(category_id):
     try:
         if not category_id:
             return "category_id is required"
@@ -87,6 +94,12 @@ def delete_category_data(category_id, log):
 
         exists = db.session.query(db.exists().where(ProductCategory.id == category_id)).scalar()
         if exists:
+            exists = db.session.query(db.exists().where(ProductItem.id == category_id)).scalar()
+            
+            if exists:
+                logging.error("error occurred in category_service/delete_category_data  -> Table reference error, category_id is {category_id}")
+                return "something went wrong"
+
             db.session.delete(ProductCategory.query.get(category_id))
             db.session.commit()
             return category_id
@@ -94,5 +107,6 @@ def delete_category_data(category_id, log):
         return "ProductCategory data not available"
 
     except Exception as error:
-        log.error("error occurred in category_service/delete_category_data" + str(error.__class__))
+        logging.error("error occurred in category_service/delete_category_data" + str(error.__class__))
+        return "something went wrong"
         return str(error.__class__)
