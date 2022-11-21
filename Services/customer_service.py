@@ -3,21 +3,32 @@ from models import Customer, CustomerSchema
 import json
 
 
-def get_customer_data(id):
+def get_customer_data(log):
     try:
-        if id:
-            temp = Customer.query.filter_by(id = id)
-        else:
-            temp = Customer.query.all()
-        
+        temp = Customer.query.all()       
         seralizer = CustomerSchema(many = True)
         data = seralizer.dump(temp)
         return data
 
     except Exception as error:
+        log.error("error occurred in customer_service/get_customer_data" + str(error.__class__))
         return str(error.__class__)
 
-def create_customer_data(customer):
+def get_customer_data_by_id(id, log):
+    try:
+        if id:
+            temp = Customer.query.filter_by(id = id)        
+            seralizer = CustomerSchema(many = True)
+            data = seralizer.dump(temp)
+            return data
+        
+        return "Id is required"
+
+    except Exception as error:
+        log.error("error occurred in customer_service/get_customer_data_by_id" + str(error.__class__))
+        return str(error.__class__)
+
+def create_customer_data(customer, log):
     try:
         if customer:
             customer = json.loads(customer)
@@ -32,7 +43,6 @@ def create_customer_data(customer):
                 return "Contactno is required"
 
             customerinfo = Customer(
-                # id = customer['id'], # generate new row
                 name = customer['name'],
                 email = customer['email'],
                 contactno = customer['contactno'],
@@ -45,9 +55,10 @@ def create_customer_data(customer):
             
         return None
     except Exception as error:
+        log.error("error occurred in customer_service/create_customer_data" + str(error.__class__))
         return str(error.__class__)
 
-def update_customer_data(update_customer):
+def update_customer_data(update_customer, log):
     try:
         if update_customer:
             customer = json.loads(update_customer)
@@ -79,9 +90,10 @@ def update_customer_data(update_customer):
         return None
 
     except Exception as error:
+        log.error("error occurred in customer_service/update_customer_data" + str(error.__class__))
         return str(error.__class__)
 
-def delete_customer_data(customer_id):
+def delete_customer_data(customer_id, log):
     try:
         if not customer_id:
             return "customer_id is required"
@@ -100,5 +112,5 @@ def delete_customer_data(customer_id):
         return "Customer data not available"
 
     except Exception as error:
-        # app.logger.info("error occurred in app/get_customer" + str(error.__class__))
+        log.error("error occurred in customer_service/delete_customer_data" + str(error.__class__))
         return str(error.__class__)
