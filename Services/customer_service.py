@@ -2,7 +2,6 @@ from db_setup import db
 from models import Customer, CustomerSchema
 import json
 
-
 def get_customer_data(log):
     try:
         temp = Customer.query.all()       

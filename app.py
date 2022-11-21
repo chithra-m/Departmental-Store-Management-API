@@ -2,7 +2,7 @@ from flask import jsonify, request, make_response
 import json, logging
 
 from db_setup import create_app, db
-from Services.customer_service import delete_customer_data, get_customer_data, create_customer_data, get_customer_data_by_id, update_customer_data
+from services.customer_service import delete_customer_data, get_customer_data, create_customer_data, get_customer_data_by_id, update_customer_data
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG) 
 
