@@ -1,6 +1,28 @@
 from db_setup import db
 from datetime import datetime 
 from sqlalchemy.orm import relationship, backref 
+from marshmallow import Schema, fields
+
+class Response:
+    data = None
+    is_success = False
+    status_message = 'Failed'
+    validation_error_message = []
+
+    def __init__(self, data = None) -> None:
+        self.data = data
+        self.is_success = data is not None
+        self.status_message = 'Success' if data is not None else 'Failed'
+        self.validation_error_message = []
+
+    def getFailedResponse():
+        return Response()
+    
+class ResponseSchema(Schema):
+    data = fields.Raw(required=True)
+    is_success = False
+    status_message = 'Failed'
+    validation_error_message = []
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,22 +36,33 @@ class Users(db.Model):
         self.email = email
         self.contactno = contactno
 
+class UsersSchema(Schema):
+    id = fields.Integer()
+    name = fields.String()
+    email = fields.String()
+    contactno = fields.String()
 
-class Customers(db.Model):
-    customer_id = db.Column(db.Integer, primary_key=True)
+class Customer(db.Model):
+    __tablename__ = 'customer'
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False, unique = True)
-    contact_no = db.Column(db.BigInteger, nullable = False)
+    contact_no = db.Column(db.String, nullable = False)
     address = db.Column(db.String)
     # address_id = db.Column(db.Integer,db.ForeignKey('address.id'))
 
     def __init__(self, name, email, contactno, address):
         self.name = name
         self.email = email
-        self.contactno = contactno
+        self.contact_no = contactno
         self.address = address
 
-
+class CustomerSchema(Schema):
+    id = fields.Integer()
+    name =  fields.String()
+    email = fields.String()
+    contact_no = fields.String()
+    address = fields.String()
 
 
 # class Category(db.Model):
@@ -70,11 +103,11 @@ class Customers(db.Model):
 
 # class Order(db.Table):
 #     id = db.Column(db.Integer, primary_key=True) 
-#     customer_id =  db.Column(db.Integer, db.ForeignKey('Customers.customer_id'))
+#     customer_id =  db.Column(db.Integer, db.ForeignKey('Customer.customer_id'))
 #     item_id = db.Column(db.Integer, db.ForeignKey('Items.item_id'))
 #     order_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-#     customer = relationship(Customers, backref = backref("Customers", cascade="all, delete-orphan"))
+#     customer = relationship(Customer, backref = backref("Customer", cascade="all, delete-orphan"))
 #     item = relationship(Items, backref = backref("Items", cascade="all, delete-orphan"))
 
 
