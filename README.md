@@ -9,5 +9,5 @@ pip install -r requirements.txt
 
 Execution:
 ```
-RUN "run.py" file
+python run.py
 ```
