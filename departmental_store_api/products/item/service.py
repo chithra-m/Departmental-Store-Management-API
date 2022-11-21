@@ -1,10 +1,13 @@
+import logging
 from departmental_store_api import db
 from departmental_store_api.products.category.model import ProductCategory
-from departmental_store_api.products.item.model import ProductItem, ProductItemSchema
+from departmental_store_api.products.item.models.product_item import ProductItem
+from departmental_store_api.order.model import ProductItemSchema
+# from departmental_store_api.products.item.models.product_item_schema import ProductItemSchema
 import json
 
 
-def get_item_data(log):
+def get_item_data():
     try:
         temp = ProductItem.query.all()       
         seralizer = ProductItemSchema(many = True)
@@ -12,11 +15,11 @@ def get_item_data(log):
         return data
 
     except Exception as error:
-        log.error("error occurred in item_service/get_item_data" + str(error.__class__))
+        logging.error("error occurred in item_service/get_item_data" + str(error.__class__))
         return str(error.__class__)
 
 
-def get_item_data_by_id(id, log):
+def get_item_data_by_id(id):
     try:
         if id:
             temp = ProductItem.query.filter_by(id = id)        
@@ -27,11 +30,11 @@ def get_item_data_by_id(id, log):
         return "Id is required"
 
     except Exception as error:
-        log.error("error occurred in item_service/get_item_data_by_id" + str(error.__class__))
+        logging.error("error occurred in item_service/get_item_data_by_id" + str(error.__class__))
         return str(error.__class__)
 
 
-def create_item_data(item, log):
+def create_item_data(item):
     try:
         if item:
             item = json.loads(item)
@@ -68,11 +71,11 @@ def create_item_data(item, log):
             
         return None
     except Exception as error:
-        log.error("error occurred in item_service/create_item_data" + str(error.__class__))
+        logging.error("error occurred in item_service/create_item_data" + str(error.__class__))
         return str(error.__class__)
 
 
-def update_item_data(update_item, log):
+def update_item_data(update_item):
     try:
         if update_item:
             item = json.loads(update_item)
@@ -81,7 +84,7 @@ def update_item_data(update_item, log):
                 return "Id is required"
 
             if item['name'] == None or item['name'].isspace():
-                return "Name is required"      
+                return "Name is required"
 
             exists = db.session.query(db.exists().where(ProductCategory.id == item['product_category_id'])).scalar()
 
@@ -100,25 +103,26 @@ def update_item_data(update_item, log):
             exists = db.session.query(db.exists().where(ProductItem.id == item['id'])).scalar()
             if not exists:
                 return "Invalid item id"
+            
             item_info = ProductItem.query.get(item['id'])
-            item_info.name = item['name']
-            item_info.description = item['description']
-            item_info.product_category_id = item['product_category_id']
-            item_info.quantity_per_unit = item['quantity_per_unit']
-            item_info.unit_price = item['unit_price']
-            item_info.units_in_stock = item['units_in_stock']
-
-            db.session.commit()
-            return item['id']
+            if item_info:
+                item_info.name = item['name']
+                item_info.description = item['description']
+                item_info.product_category_id = item['product_category_id']
+                item_info.quantity_per_unit = item['quantity_per_unit']
+                item_info.unit_price = item['unit_price']
+                item_info.units_in_stock = item['units_in_stock']
+                db.session.commit()
+                return item_info.id
             
         return None
 
     except Exception as error:
-        log.error("error occurred in item_service/update_item_data" + str(error.__class__))
+        logging.error("error occurred in item_service/update_item_data" + str(error.__class__))
         return str(error.__class__)
 
 
-def delete_item_data(item_id, log):
+def delete_item_data(item_id):
     try:
         if not item_id:
             return "item_id is required"
@@ -137,5 +141,5 @@ def delete_item_data(item_id, log):
         return "ProductItem data not available"
 
     except Exception as error:
-        log.error("error occurred in item_service/delete_item_data" + str(error.__class__))
+        logging.error("error occurred in item_service/delete_item_data" + str(error.__class__))
         return str(error.__class__)

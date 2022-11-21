@@ -37,7 +37,7 @@ def create_Supplier():
     try:
         response = create_supplier_data(request.data)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
@@ -51,7 +51,7 @@ def update_Supplier():
     try:
         response = update_supplier_data(request.data)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
@@ -65,7 +65,7 @@ def delete_Supplier(id):
     try:
         response = delete_supplier_data(id)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:

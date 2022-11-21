@@ -16,6 +16,7 @@ class Customer(db.Model):
         self.contact_no = contactno
         self.address = address
 
+
 class CustomerSchema(Schema):
     id = fields.Integer()
     name =  fields.String()

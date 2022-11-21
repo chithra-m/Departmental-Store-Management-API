@@ -1,5 +1,5 @@
 from departmental_store_api import db
-from departmental_store_api.products.item.model import ProductItem, ProductItemSchema
+# from departmental_store_api.products.item.models.product_item import ProductItem
 from marshmallow import Schema, fields
 
 class Supplier(db.Model):

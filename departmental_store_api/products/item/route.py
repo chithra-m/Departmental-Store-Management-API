@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify, make_response, request
-from departmental_store_api.products.item.service import get_item_data, create_item_data, delete_item_data, get_item_data_by_id, update_item_data
+from departmental_store_api.products.item.service import *
 import logging
 
 item = Blueprint('item', __name__)
@@ -27,7 +27,7 @@ def get_item_by_id(id):
             return make_response(jsonify(result), 200)
 
     except Exception as error:
-       logging.error("error occurred in item/get_item" + str(error.__class__))
+       logging.error("error occurred in item/get_item_by_id" + str(error.__class__))
         
     return make_response(json.dumps("Something went wrong"), 500)
 
@@ -37,7 +37,7 @@ def create_item():
     try:
         response = create_item_data(request.data)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
@@ -51,7 +51,7 @@ def update_item():
     try:
         response = update_item_data(request.data)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
@@ -65,7 +65,7 @@ def delete_item(id):
     try:
         response = delete_item_data(id)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:

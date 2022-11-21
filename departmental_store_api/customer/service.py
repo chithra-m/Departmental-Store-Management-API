@@ -14,6 +14,7 @@ def get_customer_data():
         logging.error("error occurred in customer_service/get_customer_data" + str(error.__class__))
         return str(error.__class__)
 
+
 def get_customer_data_by_id(id):
     try:
         if id:
@@ -27,6 +28,7 @@ def get_customer_data_by_id(id):
     except Exception as error:
         logging.error("error occurred in customer_service/get_customer_data_by_id" + str(error.__class__))
         return str(error.__class__)
+
 
 def create_customer_data(customer):
     try:
@@ -57,6 +59,7 @@ def create_customer_data(customer):
     except Exception as error:
         logging.error("error occurred in customer_service/create_customer_data" + str(error.__class__))
         return str(error.__class__)
+
 
 def update_customer_data(update_customer):
     try:
@@ -94,6 +97,7 @@ def update_customer_data(update_customer):
     except Exception as error:
         logging.error("error occurred in customer_service/update_customer_data" + str(error.__class__))
         return str(error.__class__)
+
 
 def delete_customer_data(customer_id):
     try:

@@ -2,7 +2,7 @@ from departmental_store_api import db
 from departmental_store_api.products.category.model import ProductCategory, ProductCategorySchema
 import json
 import logging
-from departmental_store_api.products.item.model import ProductItem
+from departmental_store_api.products.item.models.product_item import ProductItem
 
 
 def get_category_data():

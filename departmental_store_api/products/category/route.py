@@ -37,7 +37,7 @@ def create_category():
     try:
         response = create_category_data(request.data)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
@@ -51,7 +51,7 @@ def update_category():
     try:
         response = update_category_data(request.data)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
@@ -65,7 +65,7 @@ def delete_category(id):
     try:
         response = delete_category_data(id)
         if response:
-            if type(response) == type(1):
+            if isinstance(response, int):
                 return make_response(json.dumps(response), 200)
             return make_response(json.dumps(response), 500)
     except Exception as error:
